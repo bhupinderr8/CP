@@ -8,7 +8,7 @@ class Unblur{
 };
 
 vector <string> Unblur::original(vector <string> blurred){
-
+    
 }
 
 int main(){

@@ -1,0 +1,141 @@
+Recyclerview is advanced version of listview. while using large data or the data which changes occasionally, listview is not preffered. It has several major components which we need to understand before implementing. First one is layout manager, it provides the views to the recyclerview object. To represent the views, viewholder object is used. It is a subclass  of Recyclerview. It is the job of RecyclerView to create multiple viewholder objects to display on the screen.
+Now, the next step is to fill these viewholder with the data. This is done using adapter, one has to create an adapter class which extends RecyclerView.Adapter class and implement various methods which i will discuss below.
+So, the steps to implement recyclerview is as follows.
+<ul>
+<li>First, add RecyclerView dependency in your build file.
+<pre>dependencies {
+    //RecyclerView
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+}</pre> 
+</li>
+
+<li>Add RecyclerView to the layout file.
+<pre>
+// File Name: activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</android.support.constraint.ConstraintLayout>
+</pre>
+</li>
+
+<li>
+In the next step, create RecyclerView object to handle the widget, and attach adapter which handles data
+<pre>
+public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        String[] list = {"ERFxx718Fu",
+                "ks1MUwMPBY",
+                "cI4QzmtkpT",
+                "Ob49L0ghl4",
+                "UkG8hRPTf3",
+                "gt5V3v4FxR",
+                "Qt9Pu7RBFh",
+                "iZRXD07pSn",
+                "85izS7PR1N",
+                "RU7bauuGgL",};
+        mAdapter = new RecyclerViewAdapter(list);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+}
+</pre>
+As you can see, i created dummy data of strings here and passed it into the adapter.
+</li>
+<li>
+Next, we will create that custom adapter class we talked about. In this step, we have to define three methods:
+<ul>
+	<li>onCreateViewHolder</li>
+	<li>onBindViewHolder</li>
+	<li>getItemCount</li>
+</ul>
+Also, we have to create a subclass which extends RecyclerView.ViewHolder class.
+<pre>
+public class RecyclerViewAdapter extends RecyclerView.Adapter{
+
+    // Array of String/Data
+    private String[] mList;
+
+    // Constructor to assign data
+    public RecyclerViewAdapter(String[] mList) {
+        this.mList = mList;
+    }
+
+    // Creates views ( Handled by the layout manager)
+    @NonNull
+    @Override
+    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // New view
+        // inflate the view into a layout named text_view
+        TextView mTextView = (TextView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.text_view, parent, false);
+
+        return new RecyclerViewHolder(mTextView);
+    }
+
+    // binding the values with the view
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+        holder.mTextView.setText(mList[position]);
+    }
+
+    // To obtain data size
+    @Override
+    public int getItemCount() {
+        return mList.length;
+    }
+    // For each data values, assign a reference to the views
+    public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
+
+        // Here one viewholder only contains a textview
+        public TextView mTextView;
+
+        // Constructor for assigning values
+        public RecyclerViewHolder(TextView mTextView) {
+            super(mTextView);
+            this.mTextView = mTextView;
+        }
+    }
+}
+</pre>
+</li>
+<li>
+At the last,  make a layout file which defines your Viewholder's view.
+<pre>
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="32dp"
+    android:layout_marginStart="32dp"
+    android:textSize="16sp">
+
+</TextView>
+</pre>
+</li>
+
+</ul>
+Our RecyclerView list will look like this:
+<img src="https://cdncontribute.geeksforgeeks.org/wp-content/uploads/Screenshot_2018-08-26-19-58-06-688_com.example.bhupinder.recyclerview-2-171x300.jpg" alt="" width="171" height="300" class="alignnone size-medium wp-image-563229 center" />

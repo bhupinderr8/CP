@@ -6,7 +6,7 @@ typedef long long int ll;
 
 template <typename T>
 class Graph{
-    map<T, list<T> >adjList;
+        
 
     public:
     Graph(){
